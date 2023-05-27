@@ -6,7 +6,7 @@ import { device } from 'styles/mixin';
 const Layout = () => {
   return (
     <>
-      <Header>SHOP</Header>
+      <Header />
       <PageContainer>
         <Outlet />
       </PageContainer>
