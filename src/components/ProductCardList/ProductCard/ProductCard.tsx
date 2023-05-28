@@ -1,6 +1,6 @@
 import FlexBox from 'components/@common/FlexBox';
 import { Stepper } from 'components/ProductCardList/ProductCard/Stepper';
-import { useCartProduct } from 'hooks/useCartProduct';
+import { useCart } from 'hooks/useCart';
 import { useRecoilValue } from 'recoil';
 import { filteredCartProductState } from 'state/CartAtom';
 import styled from 'styled-components';
@@ -13,7 +13,7 @@ type ProductCardProps = {
 };
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const { addCartProduct, decreaseQuantity, increaseQuantity } = useCartProduct(product);
+  const { addCartProduct, decreaseQuantity, increaseQuantity } = useCart();
   const { id, price, name, imageUrl } = product;
   const filteredCartProduct = useRecoilValue(filteredCartProductState(id));
 
@@ -26,9 +26,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
         <StepperWrapper>
           <Stepper
             value={filteredCartProductQuantity}
-            onClickClosed={addCartProduct}
-            onClickDecreaseButton={decreaseQuantity}
-            onClickIncreaseButton={increaseQuantity}
+            onClickClosed={() => addCartProduct(product)}
+            onClickDecreaseButton={() => decreaseQuantity(product.id)}
+            onClickIncreaseButton={() => increaseQuantity(product.id)}
           />
         </StepperWrapper>
       </ProductImgContainer>

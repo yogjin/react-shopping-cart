@@ -1,7 +1,7 @@
 import { Stepper } from './Stepper';
 import removeIcon from 'assets/remove-icon.png';
 import FlexBox from 'components/@common/FlexBox';
-import { useCartProduct } from 'hooks/useCartProduct';
+import { useCart } from 'hooks/useCart';
 import styled, { css } from 'styled-components';
 import { CartProduct } from 'types/product';
 import { renderDefaultThumbnail } from 'utils/image';
@@ -13,13 +13,12 @@ type Props = {
 export const CartProductCard = ({ cartProduct }: Props) => {
   const { id, quantity, checked, product } = cartProduct;
   const { name, price, imageUrl } = product;
-  const { addCartProduct, deleteCartProduct, decreaseQuantity, increaseQuantity, toggleChecked } =
-    useCartProduct(product);
+  const { addCartProduct, deleteCartProduct, decreaseQuantity, increaseQuantity, toggleChecked } = useCart();
 
   return (
     <Container>
       <FlexBox>
-        <Checkbox type="checkbox" checked={checked} onClick={toggleChecked} />
+        <Checkbox type="checkbox" checked={checked} onClick={() => toggleChecked(cartProduct.id)} />
       </FlexBox>
       <FlexBox width="120px">
         <ProductImage src={imageUrl} alt={name} onError={renderDefaultThumbnail} />
@@ -28,15 +27,15 @@ export const CartProductCard = ({ cartProduct }: Props) => {
         <ProductTitle>{name}</ProductTitle>
       </FlexBox>
       <FlexBox direction="column" height="100%" gap="5px" justify="space-around" align="flex-end">
-        <RemoveButton onClick={deleteCartProduct}>
+        <RemoveButton onClick={() => deleteCartProduct(product)}>
           <img src={removeIcon} alt="remove-button" />
         </RemoveButton>
         <StepperWrapper>
           <Stepper
             value={quantity}
-            onClickClosed={addCartProduct}
-            onClickDecreaseButton={decreaseQuantity}
-            onClickIncreaseButton={increaseQuantity}
+            onClickClosed={() => addCartProduct(product)}
+            onClickDecreaseButton={() => decreaseQuantity(cartProduct.id)}
+            onClickIncreaseButton={() => increaseQuantity(cartProduct.id)}
           />
         </StepperWrapper>
         <ProductPrice>{price.toLocaleString('ko-KR')}원</ProductPrice>
