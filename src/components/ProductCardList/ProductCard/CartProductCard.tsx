@@ -34,7 +34,10 @@ export const CartProductCard = ({ cartProduct }: Props) => {
           <Stepper
             value={quantity}
             onClickClosed={() => addCartProduct(product)}
-            onClickDecreaseButton={() => decreaseQuantity(cartProduct.id)}
+            onClickDecreaseButton={() => {
+              if (cartProduct.quantity === 1) return;
+              decreaseQuantity(cartProduct.id);
+            }}
             onClickIncreaseButton={() => increaseQuantity(cartProduct.id)}
           />
         </StepperWrapper>
