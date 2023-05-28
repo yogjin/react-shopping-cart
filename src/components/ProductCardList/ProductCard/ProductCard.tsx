@@ -13,7 +13,7 @@ type ProductCardProps = {
 };
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const { addCartProduct, decreaseQuantity, increaseQuantity } = useCart();
+  const { addCartProduct, deleteCartProduct, decreaseQuantity, increaseQuantity } = useCart();
   const { id, price, name, imageUrl } = product;
   const filteredCartProduct = useRecoilValue(filteredCartProductState(id));
 
@@ -27,7 +27,12 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <Stepper
             value={filteredCartProductQuantity}
             onClickClosed={() => addCartProduct(product)}
-            onClickDecreaseButton={() => decreaseQuantity(product.id)}
+            onClickDecreaseButton={() => {
+              if (filteredCartProductQuantity > 1) {
+                return decreaseQuantity(product.id);
+              }
+              deleteCartProduct(product);
+            }}
             onClickIncreaseButton={() => increaseQuantity(product.id)}
           />
         </StepperWrapper>
