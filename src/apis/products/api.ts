@@ -12,21 +12,21 @@ export const API_BASE = 'api';
 
 export const api = {
   // 상품 목록 조회
-  getProducts(): Promise<GetProductsResponse> {
-    const products = get(`${API_BASE}/products`);
+  async getProducts(): Promise<GetProductsResponse> {
+    const response = await get(`${API_BASE}/products`);
 
-    return products;
+    return response.json();
   },
 
   // 장바구니 아이템 목록 조회
-  getCartProducts(): Promise<GetCartProductsResponse> {
-    const cartProducts = get(`${API_BASE}/cart-items`);
+  async getCartProducts(): Promise<GetCartProductsResponse> {
+    const response = await get(`${API_BASE}/cart-items`);
 
-    return cartProducts;
+    return response.json();
   },
 
   // 장바구니 아이템 추가
-  createCartProduct(productId: Product['id']): Promise<CreateCartProductResponse> {
+  createCartProduct(productId: Product['id']) {
     const response = post(`${API_BASE}/cart-items`, {
       body: JSON.stringify({ productId }),
     });
@@ -35,7 +35,7 @@ export const api = {
   },
 
   // 장바구니 아이템 변경
-  updateCartProduct(cartProduct: CartProduct): Promise<UpdateCartProductResponse> {
+  updateCartProduct(cartProduct: CartProduct) {
     const { id, quantity, checked } = cartProduct;
 
     const response = patch(`${API_BASE}/cart-items/${id}`, {
@@ -46,7 +46,7 @@ export const api = {
   },
 
   // 장바구니 아이템 삭제
-  deleteCartProduct(cartProductId: CartProduct['id']): Promise<DeleteCartProductResponse> {
+  deleteCartProduct(cartProductId: CartProduct['id']) {
     const response = remove(`${API_BASE}/cart-items/${cartProductId}`);
 
     return response;
