@@ -9,4 +9,16 @@ const flexColumn = css`
   flex-direction: column;
 `;
 
-export { flexRow, flexColumn };
+const sizes = {
+  mobile: '320px',
+  tablet: '768px',
+  desktop: '1024px',
+};
+
+const device = {
+  mobile: `(max-width: ${sizes.mobile})`,
+  tablet: `(max-width: ${sizes.tablet})`,
+  desktop: `(max-width: ${sizes.desktop})`,
+};
+
+export { flexRow, flexColumn, device };
