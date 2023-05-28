@@ -1,6 +1,6 @@
 import { CartProduct } from './../types/product';
 import mockProducts from './mockProducts.json';
-import { API_BASE } from 'apis/products/api';
+import { API_BASE_URL, API_ENDPOINT } from 'constants/api';
 import { rest } from 'msw';
 import { Product } from 'types/product';
 import store from 'utils/localStorage';
@@ -19,12 +19,12 @@ const getCart = (): CartProduct[] => {
 
 export const handlers = [
   // 상품 목록 조회
-  rest.get(`${API_BASE}/products`, (req, res, ctx) => {
+  rest.get(`${API_BASE_URL}${API_ENDPOINT.PRODUCTS}`, (req, res, ctx) => {
     return res(ctx.json(products));
   }),
 
   // 상품 조회
-  rest.get(`${API_BASE}/products/:productId`, (req, res, ctx) => {
+  rest.get(`${API_BASE_URL}${API_ENDPOINT.PRODUCTS}/:productId`, (req, res, ctx) => {
     const { productId } = req.params;
 
     const product = products.find((product) => product.id === Number(productId));
@@ -46,12 +46,12 @@ export const handlers = [
   // TODO: 상품 삭제
 
   // 장바구니 아이템 목록 조회
-  rest.get(`${API_BASE}/cart-items`, (req, res, ctx) => {
+  rest.get(`${API_BASE_URL}${API_ENDPOINT.CART_ITEMS}`, (req, res, ctx) => {
     return res(ctx.delay(1000), ctx.json(getCart()));
   }),
 
   // 장바구니 아이템 추가
-  rest.post(`${API_BASE}/cart-items`, async (req, res, ctx) => {
+  rest.post(`${API_BASE_URL}${API_ENDPOINT.CART_ITEMS}`, async (req, res, ctx) => {
     type RequestBody = {
       productId: Product['id'];
     };
@@ -87,13 +87,13 @@ export const handlers = [
 
     return res(
       ctx.status(201),
-      ctx.set('Location', `${API_BASE}/cart-items/${product.id}`),
+      ctx.set('Location', `${API_BASE_URL}${API_ENDPOINT.CART_ITEMS}/${product.id}`),
       ctx.json({ message: '상품이 추가되었습니다.' })
     );
   }),
 
   // 장바구니 아이템 변경
-  rest.patch(`${API_BASE}/cart-items/:cartItemId`, async (req, res, ctx) => {
+  rest.patch(`${API_BASE_URL}${API_ENDPOINT.CART_ITEMS}/:cartItemId`, async (req, res, ctx) => {
     type RequestBody = {
       quantity?: CartProduct['quantity'];
       checked?: CartProduct['checked'];
@@ -127,7 +127,7 @@ export const handlers = [
   }),
 
   // 장바구니 아이템 삭제
-  rest.delete(`${API_BASE}/cart-items/:cartItemId`, (req, res, ctx) => {
+  rest.delete(`${API_BASE_URL}${API_ENDPOINT.CART_ITEMS}/:cartItemId`, (req, res, ctx) => {
     const { cartItemId } = req.params;
 
     const cartProduct = getCart().find((cartProduct) => cartProduct.id === Number(cartItemId));
