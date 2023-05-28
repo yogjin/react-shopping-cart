@@ -1,11 +1,5 @@
 import { get, patch, post, remove } from 'apis/http';
-import {
-  CreateCartProductResponse,
-  DeleteCartProductResponse,
-  GetCartProductsResponse,
-  GetProductsResponse,
-  UpdateCartProductResponse,
-} from 'apis/types';
+import { GetCartProductsResponse, GetProductsResponse } from 'apis/types';
 import { CartProduct, Product } from 'types/product';
 
 export const API_BASE = 'api';
